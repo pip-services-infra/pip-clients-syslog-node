@@ -1,22 +1,23 @@
-# Client API (version 1) <br/> SysLog Microservices Client SDK for Node.js
+# Client API (version 1) <br/> EventLog Microservices Client SDK for Node.js
 
-Node.js client API for SysLog microservice is a thin layer on the top of
+Node.js client API for EventLog microservice is a thin layer on the top of
 communication protocols. It hides details related to specific protocol implementation
 and provides high-level API to access the microservice for simple and productive development.
 
 * [Installation](#install)
 * [Getting started](#get_started)
-* [SystemActivity class](#class1)
-* [SystemActivityPage class](#class2)
-* [ISysLogClient interface](#interface)
+* [SystemEventV1 class](#class1)
+* [DataPage<SystemEventV1> class](#class2)
+* [IEventLogClientV1 interface](#interface)
     - [init()](#operation1)
     - [open()](#operation2)
     - [close()](#operation3)
-    - [getSystemActivities()](#operation4)
-    - [logSystemActivity()](#operation5)
-* [SysLogRestClient class](#client_rest)
-* [SysLogSenecaClient class](#client_seneca)
-* [SysLogNullClient class](#client_null)
+    - [getEventsPageByFilter()](#operation4)
+    - [logEvent()](#operation5)
+* [EventLogRestClientV1 class](#client_rest)
+* [EventLogSenecaClientV1 class](#client_seneca)
+* [EventLogDirectClientV1 class](#client_direct)
+* [EventLogNullClientV1 class](#client_null)
 
 ## <a name="install"></a> Installation
 
@@ -27,7 +28,7 @@ To work with the client SDK add dependency into package.json file:
     ...
     "dependencies": {
         ....
-        "pip-clients-syslog-node": "git+ssh://git@github.com:pip-services/pip-clients-syslog-node.git",
+        "pip-clients-eventlog-node": "^1.0.0",
         ...
     }
 }
@@ -43,22 +44,17 @@ npm install
 npm update
 ```
 
-If you are using Typescript, add the following type definition where compiler can find it
-```javascript
-/// <reference path="../node_modules/pip-clients-syslog-node/module.d.ts" />
-```
-
 ## <a name="get_started"></a> Getting started
 
 This is a simple example on how to work with the microservice using REST client:
 
 ```javascript
 // Get Client SDK for Version 1 
-var sdk = new require('pip-clients-syslog-node').Version1;
+var sdk = new require('pip-clients-eventlog-node');
 
 // Client configuration
 var config = {
-    transport: {
+    connection: {
         type: 'http',
         host: 'localhost', 
         port: 8003
@@ -66,10 +62,10 @@ var config = {
 };
 
 // Create the client instance
-var client = sdk.SysLogRestClient(config);
+var client = sdk.EventLogRestClientV1(config);
 
 // Open client connection to the microservice
-client.open(function(err) {
+client.open(null, function(err) {
     if (err) {
         console.error(err);
         return; 
@@ -77,44 +73,46 @@ client.open(function(err) {
     
     console.log('Opened connection');
         
-    // Log system activity
-    client.logSystemActivity(
+    // Log system event
+    client.logEvent(
+        null,
         {
             type: 'restart',
-            server: 'server1',
-            severity: 500
+            source: 'server1',
+            severity: 500,
+            message: 'Server restarted'
         }, 
-        function (err, activity) {
+        function (err, event) {
             if (err) {
                 console.error(err);
                 return;
             }
             
-            console.log('Logged system activity is');
-            console.log(activity);
+            console.log('Logged system event is');
+            console.log(event);
             
             var now = new Date();
     
-            // Read server activities
-            client.getSystemActivities(
+            // Read server events
+            client.getEventsPageByFilter(
                 {
-                    server: 'server1',
-                    start: new Date(now.getTime() - 24 * 3600 * 1000),
-                    end: now
+                    source: 'server1',
+                    from_time: new Date(now.getTime() - 24 * 3600 * 1000),
+                    to_time: now
                 },
                 {
-                    paging: true,
+                    total: true,
                     skip: 0, 
                     take: 100
                 },
-                function (err, activities) {
+                function (err, page) {
                     if (err) {
                         console.error(err);
                         return;
                     }
                     
-                    console.log('Activities for server 1 were');
-                    console.log(activities.data);
+                    console.log('Events for server 1 were');
+                    console.log(page.data);
                     
                     // Close connection
                     client.close(); 
@@ -125,151 +123,172 @@ client.open(function(err) {
 });
 ```
 
-### <a name="class1"></a> SystemActivity class
+### <a name="class1"></a> SystemEventV1 class
 
 Represents a record of a system activity performed in the past
 
 **Properties:**
 - id: string - unique record id
-- time: Date - date and time when activity took place (default: current time)
-- server: string - server name where activity took place (default: current host)
-- type: string - activity type: 'restart', 'upgrade', 'shutdown', etc.
+- correlation_id: string - unique id of transaction that caused the event
+- time: Date - date and time in UTC when the event took place (default: current time)
+- source: string - server name where event took place (default: current host)
+- type: string - event type: 'restart', 'upgrade', 'shutdown', 'transaction' etc.
 - severity: number - severity level (impact on system operations) from 0: Low to 1000: High
+- message: string - descriptive message
 - details: Object - additional details that can help system administrators in troubleshooting
 
-### <a name="class2"></a> SystemActivityPage class
+### <a name="class2"></a> DataPage<SystemEventV1> class
 
-Represents a paged result with subset of requested SystemActivity objects
+Represents a paged result with subset of requested SystemEventV1 objects
 
 **Properties:**
-- data: [SystemActivity] - array of retrieved SystemActivity page
+- data: [SystemEventV1] - array of retrieved SystemEventV1 page
 - count: int - total number of objects in retrieved resultset
 
-## <a name="interface"></a> ISysLogClient interface
+## <a name="interface"></a> IEventLogClientV1 interface
 
-If you are using Typescript, you can use ISysLogClient as a common interface across all client implementations. 
-If you are using plain Javascript, you shall not worry about ISysLogClient interface. You can just expect that
+If you are using Typescript, you can use IEventLogClientV1 as a common interface across all client implementations. 
+If you are using plain Javascript, you shall not worry about IEventLogClientV1 interface. You can just expect that
 all methods defined in this interface are implemented by all client classes.
 
 ```javascript
-interface ISysLogClient {
-    init(refs);
-    open(callback);
-    close(callback);
-    getSystemActivities(filter, paging, callback);
-    logSystemActivity(activity, callback);
+interface IEventLogClientV1 {
+    setReferences(refs);
+    open(correlationId, callback);
+    close(correlationIdm callback);
+    getEventsPageByFilter(correlationId, filter, paging, callback);
+    logEvent(correlationId, event, callback);
 }
 ```
 
-### <a name="operation1"></a> init(refs)
+### <a name="operation1"></a> setReferences(refs)
 
 Initializes client references. This method is optional. It is used to set references 
 to logger or performance counters.
 
 **Arguments:**
-- refs: References - references to other components 
-  - log: ILog - reference to logger
-  - countes: ICounters - reference to performance counters
+- refs: IReferences - references to other components
 
-### <a name="operation2"></a> open(callback)
+### <a name="operation2"></a> open(correlationId, callback)
 
 Opens connection to the microservice
 
 **Arguments:**
+- correlationId: string - id that uniquely identifies transaction
 - callback: (err) => void - callback function
   - err - Error or null is no error occured
 
-### <a name="operation3"></a> close(callback)
+### <a name="operation3"></a> close(correlationId, callback)
 
 Closes connection to the microservice
 
 **Arguments:**
+- correlationId: string - id that uniquely identifies transaction
 - callback: (err) => void - callback function
   - err - Error or null is no error occured
 
-### <a name="operation4"></a> getSystemActivities(params, callback)
+### <a name="operation4"></a> getEventsPageByFilter(correlationId, params, callback)
 
-Retrieves system activities by specified criteria
+Retrieves system events by specified criteria
 
 **Arguments:** 
+- correlationId: string - id that uniquely identifies transaction
 - filter: object - filter parameters
-  - type: string - (optional) type activities
-  - server: string - (optional) server where activities occured
-  - severity: number - (optional) severity of activities
-  - start: Date - (optional) start of the time range
-  - end: Date - (optional) end of the time range
+  - search: string - (optional) search substring to find in source, type or message
+  - type: string - (optional) type events
+  - source: string - (optional) server where events occured
+  - severity: number - (optional) severity of events
+  - from_time: Date - (optional) start of the time range
+  - to_time: Date - (optional) end of the time range
 - paging: object - paging parameters
-  - paging: bool - (optional) true to enable paging and return total count
-  - skip: int - (optional) start of page (default: 0). Operation returns paged result
-  - take: int - (optional) page length (max: 100). Operation returns paged result
+  - skip: int - (optional) start of page (default: 0)
+  - take: int - (optional) page length (default: 100)
+  - total: boolean - (optional) include total counter into paged result (default: false)
 - callback: (err, page) - callback function
   - err: Error - occured error or null for success
-  - page: SystemActivityPage - retrieved SystemActivity objects in paged format
+  - page: DataPage<SystemEventV1> - retrieved SystemEventV1 objects in paged format
 
-### <a name="operation5"></a> logSystemActivity(params, callback)
+### <a name="operation5"></a> logEvent(correlationId, params, callback)
 
-Log system activity
+Log system event
 
 **Activities:** 
-- activity: SystemActivity - system activity to be logged
-- callback: (err, activity) => void - callback function
+- correlationId: string - id that uniquely identifies transaction
+- event: SystemEventV1 - system evemt to be logged
+- callback: (err, event) => void - callback function
   - err: Error - occured error or null for success
-  - activity: SystemActivity - logged system activity
+  - event: SystemEventV1 - logged system event
  
-## <a name="client_rest"></a> SysLogRestClient class
+## <a name="client_rest"></a> EventLogRestClientV1 class
 
-SysLogRestClient is a client that implements HTTP/REST protocol
+EventLogRestClientV1 is a client that implements HTTP/REST protocol
 
 ```javascript
-class SysLogRestClient extends RestClient implements ISysLogClient {
+class EventLogRestClientV1 extends CommandableRestClient implements IEventLogClientV1 {
     constructor(config?: any);
-    init(refs);
-    open(callback);
-    close(callback);
-    getSystemActivities(filter, paging, callback);
-    logSystemActivity(activity, callback);
+    setReferences(refs);
+    open(correlationId, callback);
+    close(correlationIdm callback);
+    getEventsPageByFilter(correlationId, filter, paging, callback);
+    logEvent(correlationId, event, callback);
 }
 ```
 
 **Constructor config properties:** 
-- transport: object - HTTP transport configuration options
+- connection: object - HTTP transport configuration options
   - type: string - HTTP protocol - 'http' or 'https' (default is 'http')
   - host: string - IP address/hostname binding (default is '0.0.0.0')
   - port: number - HTTP port number
 
-## <a name="client_seneca"></a> SysLogSenecaClient class
+## <a name="client_seneca"></a> EventLogSenecaClientV1 class
 
-SysLogSenecaClient is a client that implements Seneca protocol
+EventLogSenecaClientV1 is a client that implements Seneca protocol
 
 ```javascript
-class SysLogSenecaClient extends SenecaClient implements ISysLogClient {
+class EventLogSenecaClientV1 extends CommandableSenecaClient implements IEventLogClientV1 {
     constructor(config?: any);        
-    init(refs);
-    open(callback);
-    close(callback);
-    getSystemActivities(filter, paging, callback);
-    logSystemActivity(activity, callback);
+    setReferences(refs);
+    open(correlationId, callback);
+    close(correlationIdm callback);
+    getEventsPageByFilter(correlationId, filter, paging, callback);
+    logEvent(correlationId, event, callback);
 }
 ```
 
 **Constructor config properties:** 
-- transport: object - (optional) Seneca transport configuration options. See http://senecajs.org/api/ for details.
+- connection: object - (optional) Seneca transport configuration options. See http://senecajs.org/api/ for details.
   - type: string - Seneca transport type 
   - host: string - IP address/hostname binding (default is '0.0.0.0')
   - port: number - Seneca port number
 
-## <a name="client_null"></a> SysLogNullClient class
+## <a name="client_direct"></a> EventLogDirectClientV1 class
 
-SysLogNullClient is a dummy client that mimics the real client but doesn't call a microservice. 
+EventLogDirectClientV1 is a client that calls controller directly from the same container.
+It can be used in monolythic deployments when multiple microservices run in the same process.
+
+```javascript
+class EventLogDirectClientV1 extends DirectClient implements IEventLogClientV1 {
+    constructor();        
+    setReferences(refs);
+    open(correlationId, callback);
+    close(correlationIdm callback);
+    getEventsPageByFilter(correlationId, filter, paging, callback);
+    logEvent(correlationId, event, callback);
+}
+```
+
+## <a name="client_null"></a> EventLogNullClientV1 class
+
+EventLogNullClientV1 is a dummy client that mimics the real client but doesn't call a microservice. 
 It can be useful in testing scenarios to cut dependencies on external microservices.
 
 ```javascript
-class SysLogNullClient extends AbstractClient implements ISysLogClient {
+class EventLogNullClientV1 implements IEventLogClientV1 {
     constructor();        
-    init(refs);
-    open(callback);
-    close(callback);
-    getSystemActivities(filter, paging, callback);
-    logSystemActivity(activity, callback);
+    setReferences(refs);
+    open(correlationId, callback);
+    close(correlationIdm callback);
+    getEventsPageByFilter(correlationId, filter, paging, callback);
+    logEvent(correlationId, event, callback);
 }
 ```

@@ -1,18 +1,19 @@
 {
-    "name": "pip-clients-syslog-node",
+    "name": "pip-clients-eventlog-node",
     "version": "1.0.0",
-    "author": "Digital Living Software Corp. <www.digitallivingsoftware.com>",
-    "description": "Node.js client sdk for pip-services-syslog microservice",
+    "author": "Conceptual Vision Consulting LLC",
+    "description": "Node.js client sdk for pip-services-eventlog microservice",
     "contributors": [
         {
             "name": "Sergey Seroukhov",
             "email": "seroukhov@gmail.com"
         }
     ],
-    "main": "./bin/src/index.js",
+    "main": "./obj/src/index.js",
+    "typings": "./obj/src/index.d.ts",
     "keywords": [
         "pip.services", 
-        "syslog",
+        "eventlog",
         "microservice",
         "client",
         "sdk"
@@ -20,34 +21,40 @@
     "noAnalyze": true,
     "repository" : {
         "type": "git",
-        "url": "ssh://git@github.com:pip-services/pip-clients-syslog-node.git"
+        "url": "ssh://git@github.com:pip-services-infrastructure/pip-clients-eventlog-node.git"
     },
     "license": "MIT",
     "engines": {
         "node": ">=0.6.14"
     },
-    "private": true,
+    "private": false,
     "scripts": {
         "build": "tsc",
         "watch": "tsc --watch",
-        "test": "mocha -t 10000 -R spec -u tdd --recursive ./lib/test",
-        "retest": "tsc && mocha -t 10000 -R spec -u tdd --recursive ./lib/test",
-        "benchmark": "matcha -R clean -I tdd ./lib/benchmark/run.js",
-        "rebenchmark": "tsc && matcha -R clean -I tdd ./lib/benchmark/run.js"
+        "test": "mocha -t 10000 -R spec -u tdd --recursive ./obj/test",
+        "retest": "tsc && mocha -t 10000 -R spec -u tdd --recursive ./obj/test",
+        "benchmark": "matcha -R clean -I tdd ./obj/benchmark/run.js",
+        "rebenchmark": "tsc && matcha -R clean -I tdd ./obj/benchmark/run.js"
     },
     "dependencies": {
-        "lodash": "*",
-        "async": "*",
-        "pip-services-runtime-node": "git+ssh://git@github.com:pip-services/pip-services-runtime-node.git"
+        "pip-services-commons-node": "^2.0.0",
+        "pip-services-net-node": "^2.0.0"
     },
     "devDependencies": {
-        "mocha": "*",
+        "@types/node": "*",
+        "@types/lodash": "^4.0.0",
+        "@types/async": "^2.0.0",
+        "@types/chai": "*",
+        "@types/mocha": "*",
+        "@types/mongodb": "^2.1.38",
+        "@types/mongoose": "^4.7.4",
+        "seneca": "^3.3.0",
+        "restify": "^4.3.0",
         "chai": "*",
         "matcha": "*",
-        "seneca": "*",
-        "restify": "*",
-        "mongoose": "*",
+        "memjs": "*",
+        "mocha": "*",
         "aws-sdk": "*",
-        "pip-services-syslog": "git+ssh://git@github.com:pip-services/pip-services-syslog.git"
+        "pip-services-eventlog-node": "git+ssh://git@github.com:pip-services-infrastructure/pip-services-eventlog-node.git"
     }
 }

@@ -19,7 +19,7 @@
     
     "persistence": {
         "descriptor": {
-            "group": "pip-services-syslog",
+            "group": "pip-services-eventlog",
             "type": "mongodb"
         },
         "connection": {
@@ -43,7 +43,7 @@
     "services": [
         {
             "descriptor": {
-                "group": "pip-services-syslog",
+                "group": "pip-services-eventlog",
                 "type": "seneca",
                 "version": 1
             },
@@ -55,7 +55,7 @@
         },
         {
             "descriptor": {
-                "group": "pip-services-syslog",
+                "group": "pip-services-eventlog",
                 "type": "rest",
                 "version": 1
             },

@@ -1,0 +1,37 @@
+import { IReferences } from 'pip-services-commons-node';
+import { Descriptor } from 'pip-services-commons-node';
+import { FilterParams } from 'pip-services-commons-node';
+import { PagingParams} from 'pip-services-commons-node';
+import { DataPage } from 'pip-services-commons-node';
+import { DirectClient } from 'pip-services-net-node';
+
+import { IEventLogClientV1 } from './IEventLogClientV1';
+import { IEventLogBusinessLogic } from 'pip-services-eventlog-node';
+import { SystemEventV1 } from './SystemEventV1';
+
+export class EventLogDirectClientV1 extends DirectClient<IEventLogBusinessLogic> implements IEventLogClientV1 {
+            
+    public constructor() {
+        super();
+        this._dependencyResolver.put('controller', new Descriptor("pip-services-eventlog", "controller", "*", "*", "*"))
+    }
+
+    public getEventsPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, 
+        callback: (err: any, page: DataPage<SystemEventV1>) => void): void {
+        let timing = this.instrument(correlationId, 'eventlog.get_events_page_by_filter');
+        this._controller.getEventsPageByFilter(correlationId, filter, paging, (err, page) => {
+            timing.endTiming();
+            callback(err, page);
+        });
+    }
+
+    public logEvent(correlationId: string, event: SystemEventV1, 
+        callback?: (err: any, event: SystemEventV1) => void): void {
+        let timing = this.instrument(correlationId, 'eventlog.log_event');
+        this._controller.logEvent(correlationId, event, (err, event) => {
+            timing.endTiming();
+            if (callback) callback(err, event);
+        });
+    }
+
+}

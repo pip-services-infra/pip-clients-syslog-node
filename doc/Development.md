@@ -1,4 +1,4 @@
-# Development and Testing Guide <br/> SysLog Microservice Client SDK for Node.ks
+# Development and Testing Guide <br/> EventLog Microservice Client SDK for Node.ks
 
 This document provides high-level instructions on how to build and test the client SDK.
 
@@ -23,9 +23,6 @@ Then you need to configure node tools:
 # Install typescript compiler
 npm install typescript -g
  
-# Install typescript definitions utility
-npm install tsd -g 
-
 # Install mocha test runner
 npm install mocha -g
 ```
@@ -36,7 +33,7 @@ To work with GitHub code repository you need to install Git from: https://git-sc
 
 After your environment is ready you can check out microservice source code from the Github repository:
 ```bash
-git clone git@github.com:pip-services/pip-clients-syslog-node.git
+git clone git@github.com:pip-services-infrastructure/pip-clients-eventlog-node.git
 ```
 
 Then go to the project folder and install dependent modules:

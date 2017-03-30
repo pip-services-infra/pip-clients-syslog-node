@@ -2,5 +2,5 @@
 /npm-debug.log
 /.idea
 /config/config.json
-/data/syslog.test.json
+/data/eventlog.test.json
 /dist

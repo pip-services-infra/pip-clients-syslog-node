@@ -153,7 +153,7 @@ all methods defined in this interface are implemented by all client classes.
 
 ```javascript
 interface IEventLogClientV1 {
-    setReferences(refs);
+    setReferences(references);
     open(correlationId, callback);
     close(correlationIdm callback);
     getEvents(correlationId, filter, paging, callback);
@@ -161,13 +161,13 @@ interface IEventLogClientV1 {
 }
 ```
 
-### <a name="operation1"></a> setReferences(refs)
+### <a name="operation1"></a> setReferences(references)
 
 Initializes client references. This method is optional. It is used to set references 
 to logger or performance counters.
 
 **Arguments:**
-- refs: IReferences - references to other components
+- references: IReferences - references to other components
 
 ### <a name="operation2"></a> open(correlationId, callback)
 
@@ -187,7 +187,7 @@ Closes connection to the microservice
 - callback: (err) => void - callback function
   - err - Error or null is no error occured
 
-### <a name="operation4"></a> getEvents(correlationId, params, callback)
+### <a name="operation4"></a> getEvents(correlationId, filter, paging, callback)
 
 Retrieves system events by specified criteria
 
@@ -208,7 +208,7 @@ Retrieves system events by specified criteria
   - err: Error - occured error or null for success
   - page: DataPage<SystemEventV1> - retrieved SystemEventV1 objects in paged format
 
-### <a name="operation5"></a> logEvent(correlationId, params, callback)
+### <a name="operation5"></a> logEvent(correlationId, event, callback)
 
 Log system event
 
@@ -226,7 +226,7 @@ EventLogRestClientV1 is a client that implements HTTP/REST protocol
 ```javascript
 class EventLogRestClientV1 extends CommandableRestClient implements IEventLogClientV1 {
     constructor(config?: any);
-    setReferences(refs);
+    setReferences(references);
     open(correlationId, callback);
     close(correlationIdm callback);
     getEvents(correlationId, filter, paging, callback);
@@ -247,9 +247,9 @@ EventLogSenecaClientV1 is a client that implements Seneca protocol
 ```javascript
 class EventLogSenecaClientV1 extends CommandableSenecaClient implements IEventLogClientV1 {
     constructor(config?: any);        
-    setReferences(refs);
+    setReferences(references);
     open(correlationId, callback);
-    close(correlationIdm callback);
+    close(correlationId, callback);
     getEvents(correlationId, filter, paging, callback);
     logEvent(correlationId, event, callback);
 }
@@ -269,9 +269,9 @@ It can be used in monolythic deployments when multiple microservices run in the 
 ```javascript
 class EventLogDirectClientV1 extends DirectClient implements IEventLogClientV1 {
     constructor();        
-    setReferences(refs);
+    setReferences(references);
     open(correlationId, callback);
-    close(correlationIdm callback);
+    close(correlationId, callback);
     getEvents(correlationId, filter, paging, callback);
     logEvent(correlationId, event, callback);
 }
@@ -285,9 +285,9 @@ It can be useful in testing scenarios to cut dependencies on external microservi
 ```javascript
 class EventLogNullClientV1 implements IEventLogClientV1 {
     constructor();        
-    setReferences(refs);
+    setReferences(references);
     open(correlationId, callback);
-    close(correlationIdm callback);
+    close(correlationId, callback);
     getEvents(correlationId, filter, paging, callback);
     logEvent(correlationId, event, callback);
 }

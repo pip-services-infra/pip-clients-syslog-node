@@ -4,7 +4,7 @@ import { DataPage } from 'pip-services-commons-node';
 import { SystemEventV1 } from './SystemEventV1';
 
 export interface IEventLogClientV1 {
-    getEventsPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, 
+    getEvents(correlationId: string, filter: FilterParams, paging: PagingParams, 
         callback: (err: any, page: DataPage<SystemEventV1>) => void): void;
 
     logEvent(correlationId: string, event: SystemEventV1, 

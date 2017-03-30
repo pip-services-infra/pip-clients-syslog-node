@@ -19,10 +19,10 @@ export class EventLogSenecaClientV1 extends CommandableSenecaClient implements I
             this.configure(ConfigParams.fromValue(config));
     }
         
-    public getEventsPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams,
+    public getEvents(correlationId: string, filter: FilterParams, paging: PagingParams,
         callback: (err: any, page: DataPage<SystemEventV1>) => void) {
         this.callCommand(
-            'get_events_page_by_filter',
+            'get_events',
             correlationId,
             {
                 filter: filter,

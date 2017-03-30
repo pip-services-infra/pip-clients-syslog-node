@@ -16,10 +16,10 @@ export class EventLogDirectClientV1 extends DirectClient<IEventLogBusinessLogic>
         this._dependencyResolver.put('controller', new Descriptor("pip-services-eventlog", "controller", "*", "*", "*"))
     }
 
-    public getEventsPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, 
+    public getEvents(correlationId: string, filter: FilterParams, paging: PagingParams, 
         callback: (err: any, page: DataPage<SystemEventV1>) => void): void {
-        let timing = this.instrument(correlationId, 'eventlog.get_events_page_by_filter');
-        this._controller.getEventsPageByFilter(correlationId, filter, paging, (err, page) => {
+        let timing = this.instrument(correlationId, 'eventlog.get_events');
+        this._controller.getEvents(correlationId, filter, paging, (err, page) => {
             timing.endTiming();
             callback(err, page);
         });

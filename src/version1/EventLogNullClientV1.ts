@@ -7,7 +7,7 @@ import { IEventLogClientV1 } from './IEventLogClientV1';
 export class EventLogNullClientV1 implements IEventLogClientV1 {
     constructor(config?: any) {}
         
-    public getEventsPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, 
+    public getEvents(correlationId: string, filter: FilterParams, paging: PagingParams, 
         callback: (err: any, page: DataPage<SystemEventV1>) => void): void {
         callback(null, new DataPage<SystemEventV1>([], 0));
     }

@@ -12,7 +12,7 @@ and provides high-level API to access the microservice for simple and productive
     - [init()](#operation1)
     - [open()](#operation2)
     - [close()](#operation3)
-    - [getEventsPageByFilter()](#operation4)
+    - [getEvents()](#operation4)
     - [logEvent()](#operation5)
 * [EventLogRestClientV1 class](#client_rest)
 * [EventLogSenecaClientV1 class](#client_seneca)
@@ -94,7 +94,7 @@ client.open(null, function(err) {
             var now = new Date();
     
             // Read server events
-            client.getEventsPageByFilter(
+            client.getEvents(
                 {
                     source: 'server1',
                     from_time: new Date(now.getTime() - 24 * 3600 * 1000),
@@ -156,7 +156,7 @@ interface IEventLogClientV1 {
     setReferences(refs);
     open(correlationId, callback);
     close(correlationIdm callback);
-    getEventsPageByFilter(correlationId, filter, paging, callback);
+    getEvents(correlationId, filter, paging, callback);
     logEvent(correlationId, event, callback);
 }
 ```
@@ -187,7 +187,7 @@ Closes connection to the microservice
 - callback: (err) => void - callback function
   - err - Error or null is no error occured
 
-### <a name="operation4"></a> getEventsPageByFilter(correlationId, params, callback)
+### <a name="operation4"></a> getEvents(correlationId, params, callback)
 
 Retrieves system events by specified criteria
 
@@ -229,7 +229,7 @@ class EventLogRestClientV1 extends CommandableRestClient implements IEventLogCli
     setReferences(refs);
     open(correlationId, callback);
     close(correlationIdm callback);
-    getEventsPageByFilter(correlationId, filter, paging, callback);
+    getEvents(correlationId, filter, paging, callback);
     logEvent(correlationId, event, callback);
 }
 ```
@@ -250,7 +250,7 @@ class EventLogSenecaClientV1 extends CommandableSenecaClient implements IEventLo
     setReferences(refs);
     open(correlationId, callback);
     close(correlationIdm callback);
-    getEventsPageByFilter(correlationId, filter, paging, callback);
+    getEvents(correlationId, filter, paging, callback);
     logEvent(correlationId, event, callback);
 }
 ```
@@ -272,7 +272,7 @@ class EventLogDirectClientV1 extends DirectClient implements IEventLogClientV1 {
     setReferences(refs);
     open(correlationId, callback);
     close(correlationIdm callback);
-    getEventsPageByFilter(correlationId, filter, paging, callback);
+    getEvents(correlationId, filter, paging, callback);
     logEvent(correlationId, event, callback);
 }
 ```
@@ -288,7 +288,7 @@ class EventLogNullClientV1 implements IEventLogClientV1 {
     setReferences(refs);
     open(correlationId, callback);
     close(correlationIdm callback);
-    getEventsPageByFilter(correlationId, filter, paging, callback);
+    getEvents(correlationId, filter, paging, callback);
     logEvent(correlationId, event, callback);
 }
 ```

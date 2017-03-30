@@ -9,8 +9,8 @@ class EventLogRestClientV1 extends pip_services_net_node_1.CommandableRestClient
         if (config != null)
             this.configure(pip_services_commons_node_1.ConfigParams.fromValue(config));
     }
-    getEventsPageByFilter(correlationId, filter, paging, callback) {
-        this.callCommand('get_events_page_by_filter', correlationId, {
+    getEvents(correlationId, filter, paging, callback) {
+        this.callCommand('get_events', correlationId, {
             filter: filter,
             paging: paging
         }, callback);

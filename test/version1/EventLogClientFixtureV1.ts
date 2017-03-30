@@ -76,7 +76,7 @@ export class EventLogClientFixtureV1 {
             },
         // Get all system events
             (callback) => {
-                this._client.getEventsPageByFilter(
+                this._client.getEvents(
                     null,
                     null,
                     null,

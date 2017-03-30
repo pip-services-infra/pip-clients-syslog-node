@@ -44,7 +44,7 @@ class EventLogClientFixtureV1 {
             },
             // Get all system events
             (callback) => {
-                this._client.getEventsPageByFilter(null, null, null, (err, page) => {
+                this._client.getEvents(null, null, null, (err, page) => {
                     assert.isNull(err);
                     assert.isObject(page);
                     assert.lengthOf(page.data, 2);

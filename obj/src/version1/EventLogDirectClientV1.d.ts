@@ -7,6 +7,6 @@ import { IEventLogBusinessLogic } from 'pip-services-eventlog-node';
 import { SystemEventV1 } from './SystemEventV1';
 export declare class EventLogDirectClientV1 extends DirectClient<IEventLogBusinessLogic> implements IEventLogClientV1 {
     constructor();
-    getEventsPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, callback: (err: any, page: DataPage<SystemEventV1>) => void): void;
+    getEvents(correlationId: string, filter: FilterParams, paging: PagingParams, callback: (err: any, page: DataPage<SystemEventV1>) => void): void;
     logEvent(correlationId: string, event: SystemEventV1, callback?: (err: any, event: SystemEventV1) => void): void;
 }

@@ -58,7 +58,7 @@ var config = {
 Instantiate the client and open connection to the microservice
 ```javascript
 // Create the client instance
-var client = sdk.EventLogRestClientV1(config);
+var client = sdk.EventLogHttpClientV1(config);
 
 // Connect to the microservice
 client.open(null, function(err) {

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 let os = require('os');
 const pip_services_commons_node_1 = require("pip-services-commons-node");
 const pip_services_net_node_1 = require("pip-services-net-node");
-class EventLogRestClientV1 extends pip_services_net_node_1.CommandableRestClient {
+class EventLogHttpClientV1 extends pip_services_net_node_1.CommandableHttpClient {
     constructor(config) {
         super('eventlog');
         if (config != null)
@@ -23,5 +23,5 @@ class EventLogRestClientV1 extends pip_services_net_node_1.CommandableRestClient
         }, callback);
     }
 }
-exports.EventLogRestClientV1 = EventLogRestClientV1;
-//# sourceMappingURL=EventLogRestClientV1.js.map
+exports.EventLogHttpClientV1 = EventLogHttpClientV1;
+//# sourceMappingURL=EventLogHttpClientV1.js.map

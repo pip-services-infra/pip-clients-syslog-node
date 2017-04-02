@@ -8,20 +8,20 @@ import { ConsoleLogger } from 'pip-services-commons-node';
 
 import { EventLogMemoryPersistence } from 'pip-services-eventlog-node';
 import { EventLogController } from 'pip-services-eventlog-node';
-import { EventLogRestServiceV1 } from 'pip-services-eventlog-node';
+import { EventLogHttpServiceV1 } from 'pip-services-eventlog-node';
 import { IEventLogClientV1 } from '../../src/version1/IEventLogClientV1';
-import { EventLogRestClientV1 } from '../../src/version1/EventLogRestClientV1';
+import { EventLogHttpClientV1 } from '../../src/version1/EventLogHttpClientV1';
 import { EventLogClientFixtureV1 } from './EventLogClientFixtureV1';
 
-var restConfig = ConfigParams.fromTuples(
+var httpConfig = ConfigParams.fromTuples(
     "connection.protocol", "http",
     "connection.host", "localhost",
     "connection.port", 3000
 );
 
-suite('EventLogRestClientV1', ()=> {
-    let service: EventLogRestServiceV1;
-    let client: EventLogRestClientV1;
+suite('EventLogHttpClientV1', ()=> {
+    let service: EventLogHttpServiceV1;
+    let client: EventLogHttpClientV1;
     let fixture: EventLogClientFixtureV1;
 
     suiteSetup((done) => {
@@ -29,21 +29,21 @@ suite('EventLogRestClientV1', ()=> {
         let persistence = new EventLogMemoryPersistence();
         let controller = new EventLogController();
 
-        service = new EventLogRestServiceV1();
-        service.configure(restConfig);
+        service = new EventLogHttpServiceV1();
+        service.configure(httpConfig);
 
         let references: References = References.fromTuples(
             new Descriptor('pip-services-commons', 'logger', 'console', 'default', '1.0'), logger,
             new Descriptor('pip-services-eventlog', 'persistence', 'memory', 'default', '1.0'), persistence,
             new Descriptor('pip-services-eventlog', 'controller', 'default', 'default', '1.0'), controller,
-            new Descriptor('pip-services-eventlog', 'service', 'rest', 'default', '1.0'), service
+            new Descriptor('pip-services-eventlog', 'service', 'http', 'default', '1.0'), service
         );
         controller.setReferences(references);
         service.setReferences(references);
 
-        client = new EventLogRestClientV1();
+        client = new EventLogHttpClientV1();
         client.setReferences(references);
-        client.configure(restConfig);
+        client.configure(httpConfig);
 
         fixture = new EventLogClientFixtureV1(client);
 

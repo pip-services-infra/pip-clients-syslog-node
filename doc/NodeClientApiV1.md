@@ -14,7 +14,7 @@ and provides high-level API to access the microservice for simple and productive
     - [close()](#operation3)
     - [getEvents()](#operation4)
     - [logEvent()](#operation5)
-* [EventLogRestClientV1 class](#client_rest)
+* [EventLogHttpClientV1 class](#client_http)
 * [EventLogSenecaClientV1 class](#client_seneca)
 * [EventLogDirectClientV1 class](#client_direct)
 * [EventLogNullClientV1 class](#client_null)
@@ -62,7 +62,7 @@ var config = {
 };
 
 // Create the client instance
-var client = sdk.EventLogRestClientV1(config);
+var client = sdk.EventLogHttpClientV1(config);
 
 // Open client connection to the microservice
 client.open(null, function(err) {
@@ -219,12 +219,12 @@ Log system event
   - err: Error - occured error or null for success
   - event: SystemEventV1 - logged system event
  
-## <a name="client_rest"></a> EventLogRestClientV1 class
+## <a name="client_http"></a> EventLogHttpClientV1 class
 
-EventLogRestClientV1 is a client that implements HTTP/REST protocol
+EventLogHttpClientV1 is a client that implements HTTP protocol
 
 ```javascript
-class EventLogRestClientV1 extends CommandableRestClient implements IEventLogClientV1 {
+class EventLogHttpClientV1 extends CommandableHttpClient implements IEventLogClientV1 {
     constructor(config?: any);
     setReferences(references);
     open(correlationId, callback);

@@ -7,13 +7,9 @@ and provides high-level API to access the microservice for simple and productive
 * [Installation](#install)
 * [Getting started](#get_started)
 * [SystemEventV1 class](#class1)
-* [DataPage<SystemEventV1> class](#class2)
 * [IEventLogClientV1 interface](#interface)
-    - [init()](#operation1)
-    - [open()](#operation2)
-    - [close()](#operation3)
-    - [getEvents()](#operation4)
-    - [logEvent()](#operation5)
+    - [getEvents()](#operation1)
+    - [logEvent()](#operation2)
 * [EventLogHttpClientV1 class](#client_http)
 * [EventLogSenecaClientV1 class](#client_seneca)
 * [EventLogDirectClientV1 class](#client_direct)
@@ -55,7 +51,7 @@ var sdk = new require('pip-clients-eventlog-node');
 // Client configuration
 var config = {
     connection: {
-        type: 'http',
+        protocol: 'http',
         host: 'localhost', 
         port: 8003
     }
@@ -137,14 +133,6 @@ Represents a record of a system activity performed in the past
 - message: string - descriptive message
 - details: Object - additional details that can help system administrators in troubleshooting
 
-### <a name="class2"></a> DataPage<SystemEventV1> class
-
-Represents a paged result with subset of requested SystemEventV1 objects
-
-**Properties:**
-- data: [SystemEventV1] - array of retrieved SystemEventV1 page
-- count: int - total number of objects in retrieved resultset
-
 ## <a name="interface"></a> IEventLogClientV1 interface
 
 If you are using Typescript, you can use IEventLogClientV1 as a common interface across all client implementations. 
@@ -153,41 +141,12 @@ all methods defined in this interface are implemented by all client classes.
 
 ```javascript
 interface IEventLogClientV1 {
-    setReferences(references);
-    open(correlationId, callback);
-    close(correlationIdm callback);
     getEvents(correlationId, filter, paging, callback);
     logEvent(correlationId, event, callback);
 }
 ```
 
-### <a name="operation1"></a> setReferences(references)
-
-Initializes client references. This method is optional. It is used to set references 
-to logger or performance counters.
-
-**Arguments:**
-- references: IReferences - references to other components
-
-### <a name="operation2"></a> open(correlationId, callback)
-
-Opens connection to the microservice
-
-**Arguments:**
-- correlationId: string - id that uniquely identifies transaction
-- callback: (err) => void - callback function
-  - err - Error or null is no error occured
-
-### <a name="operation3"></a> close(correlationId, callback)
-
-Closes connection to the microservice
-
-**Arguments:**
-- correlationId: string - id that uniquely identifies transaction
-- callback: (err) => void - callback function
-  - err - Error or null is no error occured
-
-### <a name="operation4"></a> getEvents(correlationId, filter, paging, callback)
+### <a name="operation1"></a> getEvents(correlationId, filter, paging, callback)
 
 Retrieves system events by specified criteria
 
@@ -208,7 +167,7 @@ Retrieves system events by specified criteria
   - err: Error - occured error or null for success
   - page: DataPage<SystemEventV1> - retrieved SystemEventV1 objects in paged format
 
-### <a name="operation5"></a> logEvent(correlationId, event, callback)
+### <a name="operation2"></a> logEvent(correlationId, event, callback)
 
 Log system event
 
@@ -246,7 +205,7 @@ EventLogSenecaClientV1 is a client that implements Seneca protocol
 
 ```javascript
 class EventLogSenecaClientV1 extends CommandableSenecaClient implements IEventLogClientV1 {
-    constructor(config?: any);        
+    constructor(config?: any);
     setReferences(references);
     open(correlationId, callback);
     close(correlationId, callback);
@@ -284,10 +243,7 @@ It can be useful in testing scenarios to cut dependencies on external microservi
 
 ```javascript
 class EventLogNullClientV1 implements IEventLogClientV1 {
-    constructor();        
-    setReferences(references);
-    open(correlationId, callback);
-    close(correlationId, callback);
+    constructor();
     getEvents(correlationId, filter, paging, callback);
     logEvent(correlationId, event, callback);
 }

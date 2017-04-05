@@ -1,3 +1,4 @@
+import { ConfigParams } from 'pip-services-commons-node';
 import { IReferences } from 'pip-services-commons-node';
 import { Descriptor } from 'pip-services-commons-node';
 import { FilterParams } from 'pip-services-commons-node';
@@ -11,9 +12,12 @@ import { SystemEventV1 } from './SystemEventV1';
 
 export class EventLogDirectClientV1 extends DirectClient<IEventLogBusinessLogic> implements IEventLogClientV1 {
             
-    public constructor() {
+    public constructor(config?: any) {
         super();
         this._dependencyResolver.put('controller', new Descriptor("pip-services-eventlog", "controller", "*", "*", "*"))
+
+        if (config != null)
+            this.configure(ConfigParams.fromValue(config));
     }
 
     public getEvents(correlationId: string, filter: FilterParams, paging: PagingParams, 

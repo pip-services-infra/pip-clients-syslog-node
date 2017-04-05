@@ -1,11 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const pip_services_commons_node_1 = require("pip-services-commons-node");
+const pip_services_commons_node_2 = require("pip-services-commons-node");
 const pip_services_net_node_1 = require("pip-services-net-node");
 class EventLogDirectClientV1 extends pip_services_net_node_1.DirectClient {
-    constructor() {
+    constructor(config) {
         super();
-        this._dependencyResolver.put('controller', new pip_services_commons_node_1.Descriptor("pip-services-eventlog", "controller", "*", "*", "*"));
+        this._dependencyResolver.put('controller', new pip_services_commons_node_2.Descriptor("pip-services-eventlog", "controller", "*", "*", "*"));
+        if (config != null)
+            this.configure(pip_services_commons_node_1.ConfigParams.fromValue(config));
     }
     getEvents(correlationId, filter, paging, callback) {
         let timing = this.instrument(correlationId, 'eventlog.get_events');

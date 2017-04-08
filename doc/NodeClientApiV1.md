@@ -187,7 +187,7 @@ class EventLogHttpClientV1 extends CommandableHttpClient implements IEventLogCli
     constructor(config?: any);
     setReferences(references);
     open(correlationId, callback);
-    close(correlationIdm callback);
+    close(correlationId, callback);
     getEvents(correlationId, filter, paging, callback);
     logEvent(correlationId, event, callback);
 }

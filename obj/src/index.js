@@ -4,6 +4,6 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./version1"));
-var EventLogFactory_1 = require("./build/EventLogFactory");
-exports.EventLogFactory = EventLogFactory_1.EventLogFactory;
+var EventLogClientFactory_1 = require("./build/EventLogClientFactory");
+exports.EventLogClientFactory = EventLogClientFactory_1.EventLogClientFactory;
 //# sourceMappingURL=index.js.map

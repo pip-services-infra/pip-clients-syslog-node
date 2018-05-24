@@ -13,7 +13,7 @@ import { IEventLogClientV1 } from './IEventLogClientV1';
 export class EventLogHttpClientV1 extends CommandableHttpClient implements IEventLogClientV1 {
 
     constructor(config?: any) {
-        super('eventlog');
+        super('v1/eventlog');
 
         if (config != null)
             this.configure(ConfigParams.fromValue(config));

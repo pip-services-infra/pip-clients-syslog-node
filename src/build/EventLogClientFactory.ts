@@ -1,5 +1,5 @@
 import { Descriptor } from 'pip-services-commons-node';
-import { Factory } from 'pip-services-commons-node';
+import { Factory } from 'pip-services-components-node';
 
 import { EventLogNullClientV1 } from '../version1/EventLogNullClientV1';
 import { EventLogDirectClientV1 } from '../version1/EventLogDirectClientV1';

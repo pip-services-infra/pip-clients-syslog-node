@@ -5,7 +5,7 @@ import { IReferences } from 'pip-services-commons-node';
 import { FilterParams } from 'pip-services-commons-node';
 import { PagingParams } from 'pip-services-commons-node';
 import { DataPage } from 'pip-services-commons-node';
-import { CommandableHttpClient } from 'pip-services-net-node';
+import { CommandableHttpClient } from 'pip-services-rpc-node';
 
 import { SystemEventV1 } from './SystemEventV1';
 import { IEventLogClientV1 } from './IEventLogClientV1';

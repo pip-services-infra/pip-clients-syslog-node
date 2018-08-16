@@ -40,6 +40,7 @@
         "pip-services-commons-node": "^3.0.0",
         "pip-services-components-node": "^3.0.0",
         "pip-services-rpc-node": "^3.0.0",
+        "pip-services-seneca-node": "^3.0.0",
         "pip-services-aws-node": "^3.0.0"
     },
     "devDependencies": {

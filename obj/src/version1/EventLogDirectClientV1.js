@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const pip_services_commons_node_1 = require("pip-services-commons-node");
-const pip_services_commons_node_2 = require("pip-services-commons-node");
-const pip_services_rpc_node_1 = require("pip-services-rpc-node");
-class EventLogDirectClientV1 extends pip_services_rpc_node_1.DirectClient {
+const pip_services3_commons_node_1 = require("pip-services3-commons-node");
+const pip_services3_commons_node_2 = require("pip-services3-commons-node");
+const pip_services3_rpc_node_1 = require("pip-services3-rpc-node");
+class EventLogDirectClientV1 extends pip_services3_rpc_node_1.DirectClient {
     constructor(config) {
         super();
-        this._dependencyResolver.put('controller', new pip_services_commons_node_2.Descriptor("pip-services-eventlog", "controller", "*", "*", "*"));
+        this._dependencyResolver.put('controller', new pip_services3_commons_node_2.Descriptor("pip-services-eventlog", "controller", "*", "*", "*"));
         if (config != null)
-            this.configure(pip_services_commons_node_1.ConfigParams.fromValue(config));
+            this.configure(pip_services3_commons_node_1.ConfigParams.fromValue(config));
     }
     getEvents(correlationId, filter, paging, callback) {
         let timing = this.instrument(correlationId, 'eventlog.get_events');

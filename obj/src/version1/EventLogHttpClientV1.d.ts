@@ -1,7 +1,7 @@
-import { FilterParams } from 'pip-services-commons-node';
-import { PagingParams } from 'pip-services-commons-node';
-import { DataPage } from 'pip-services-commons-node';
-import { CommandableHttpClient } from 'pip-services-rpc-node';
+import { FilterParams } from 'pip-services3-commons-node';
+import { PagingParams } from 'pip-services3-commons-node';
+import { DataPage } from 'pip-services3-commons-node';
+import { CommandableHttpClient } from 'pip-services3-rpc-node';
 import { SystemEventV1 } from './SystemEventV1';
 import { IEventLogClientV1 } from './IEventLogClientV1';
 export declare class EventLogHttpClientV1 extends CommandableHttpClient implements IEventLogClientV1 {

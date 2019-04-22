@@ -1,4 +1,4 @@
-import { ConfigParams } from 'pip-services-commons-node';
+import { ConfigParams } from 'pip-services3-commons-node';
 
 import { EventLogClientFixtureV1 } from './EventLogClientFixtureV1';
 import { EventLogLambdaClientV1 } from '../../src/version1/EventLogLambdaClientV1';

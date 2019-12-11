@@ -13,9 +13,9 @@ class EventLogClientFactory extends pip_services3_components_node_1.Factory {
         this.registerAsType(EventLogClientFactory.HttpClientV1Descriptor, EventLogHttpClientV1_1.EventLogHttpClientV1);
     }
 }
+exports.EventLogClientFactory = EventLogClientFactory;
 EventLogClientFactory.Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-eventlog', 'factory', 'default', 'default', '1.0');
 EventLogClientFactory.NullClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-eventlog', 'client', 'null', 'default', '1.0');
 EventLogClientFactory.DirectClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-eventlog', 'client', 'direct', 'default', '1.0');
 EventLogClientFactory.HttpClientV1Descriptor = new pip_services3_commons_node_1.Descriptor('pip-services-eventlog', 'client', 'http', 'default', '1.0');
-exports.EventLogClientFactory = EventLogClientFactory;
 //# sourceMappingURL=EventLogClientFactory.js.map
